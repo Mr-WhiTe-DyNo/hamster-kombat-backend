@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hamster Kombat Key Generator</title>
+    <script>
+        function requestKey() {
+            fetch('https://your-render-backend-url.com/request-key', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('key').innerText = data.key;
+                    startTimer(data.startTime);
+                });
+        }
+
+        function startTimer(startTime) {
+            const timerDuration = 10 * 60 * 1000; // 10 minutes
+            const endTime = startTime + timerDuration;
+            const timerElement = document.getElementById('timer');
+
+            function updateTimer() {
+                const now = Date.now();
+                const remaining = endTime - now;
+
+                if (remaining <= 0) {
+                    timerElement.innerText = 'Time’s up!';
+                } else {
+                    const minutes = Math.floor(remaining / 60000);
+                    const seconds = Math.floor((remaining % 60000) / 1000);
+                    timerElement.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                    setTimeout(updateTimer, 1000);
+                }
+            }
+
+            updateTimer();
+        }
+    </script>
+</head>
+<body>
+    <button onclick="requestKey()">Get Key</button>
+    <p>Key: <span id="key"></span></p>
+    <p>Time Left: <span id="timer"></span></p>
+</body>
+</html>
